@@ -122,7 +122,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+cryptopulse/.env
 .env_docker
 .venv
 env/
