@@ -13,8 +13,6 @@ class Currency(CryptoDataMixin, Base):
     _cryptopulse_back_populates = "currency"
 
     name: Mapped[str] = mapped_column(unique=True, index=True)
-    max_price: Mapped[float]
-    open_interest: Mapped[float]
 
 
 class DateRecord(CryptoDataMixin, Base):
@@ -30,10 +28,12 @@ class DateRecord(CryptoDataMixin, Base):
 class TimeRecord(CryptoDataMixin, Base):
     _cryptopulse_back_populates = "time"
 
-    time: Mapped[datetime.time] = mapped_column(
-        TIME,
-        server_default=func.current_time(),
-    )
+    time: Mapped[datetime.time] = mapped_column(TIME)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        time = datetime.datetime.now(datetime.UTC).time()
+        self.time = datetime.time(hour=time.hour, minute=time.minute)
 
 
 class Exchange(CryptoDataMixin, Base):
@@ -47,6 +47,9 @@ class CryptoPulse(Base):
     date_id: Mapped[int] = mapped_column(ForeignKey(DateRecord.id))
     time_id: Mapped[int] = mapped_column(ForeignKey(TimeRecord.id))
     exchange_id: Mapped[int] = mapped_column(ForeignKey(Exchange.id))
+
+    max_price: Mapped[float]
+    open_interest: Mapped[float]
 
     currency: Mapped[Currency] = relationship(back_populates="cryptopulses")
     date: Mapped[DateRecord] = relationship(back_populates="cryptopulses")

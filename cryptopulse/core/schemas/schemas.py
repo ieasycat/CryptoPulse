@@ -5,8 +5,6 @@ from pydantic import BaseModel
 
 class CryptoCurrencySchema(BaseModel):
     name: str
-    max_price: float
-    open_interest: float
 
 
 class DateSchema(BaseModel):
@@ -27,3 +25,5 @@ class CryptoPulseSchema(BaseModel):
     date: DateSchema
     time: TimeSchema
     exchange: ExchangeSchema
+    max_price: float
+    open_interest: float
