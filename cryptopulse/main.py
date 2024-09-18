@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.responses import ORJSONResponse
 
 import uvicorn
 
@@ -17,7 +18,10 @@ async def lifespan(app: FastAPI):
     await db_helper.dispose()
 
 
-main_app = FastAPI(lifespan=lifespan)
+main_app = FastAPI(
+    default_response_class=ORJSONResponse,
+    lifespan=lifespan,
+)
 main_app.include_router(
     cryptopulse_router, prefix=settings.api.prefix, tags=settings.api.tags
 )
