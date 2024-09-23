@@ -16,6 +16,7 @@ pydantic-settings = "^2.5.2"
 asyncpg = "^0.29.0"
 alembic = "^1.13.2"
 orjson = "^3.10.7"
+aiohttp = "^3.10.5"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
