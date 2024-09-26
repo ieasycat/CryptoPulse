@@ -13,6 +13,7 @@ class Currency(CryptoDataMixin, Base):
     _cryptopulse_back_populates = "currency"
 
     name: Mapped[str] = mapped_column(unique=True, index=True)
+    activated: Mapped[bool] = mapped_column(default=True)
 
 
 class DateRecord(CryptoDataMixin, Base):
