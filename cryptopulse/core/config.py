@@ -1,7 +1,9 @@
-from typing import List
+from pathlib import Path
+import os
+
+from typing import List, ClassVar
 from pydantic import BaseModel, PostgresDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
-import os
 
 
 class RunConfig(BaseModel):
@@ -22,8 +24,12 @@ class DatabaseConfig(BaseModel):
 
 
 class Settings(BaseSettings):
+    env_path: ClassVar[str] = os.getenv(
+        "APP_CONFIG_ENV_PATH", str(Path(__file__).parent.parent / ".env")
+    )
+
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=env_path,
         case_sensitive=False,
         env_nested_delimiter="__",
         env_prefix="APP_CONFIG__",
@@ -31,6 +37,7 @@ class Settings(BaseSettings):
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig
+    coinmarketcap_key: dict
 
 
 settings = Settings()
