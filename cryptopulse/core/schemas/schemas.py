@@ -1,5 +1,7 @@
 from datetime import date, time
 
+from decimal import Decimal
+
 from pydantic import BaseModel
 
 
@@ -25,5 +27,5 @@ class CryptoPulseSchema(BaseModel):
     date: DateSchema
     time: TimeSchema
     exchange: ExchangeSchema
-    max_price: float
-    open_interest: float
+    max_price: Decimal
+    open_interest: Decimal

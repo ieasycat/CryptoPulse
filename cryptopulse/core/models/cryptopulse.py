@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, DECIMAL
 from sqlalchemy.dialects.postgresql import DATE, TIME
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
@@ -49,8 +49,8 @@ class CryptoPulse(Base):
     time_id: Mapped[int] = mapped_column(ForeignKey(TimeRecord.id))
     exchange_id: Mapped[int] = mapped_column(ForeignKey(Exchange.id))
 
-    max_price: Mapped[float]
-    open_interest: Mapped[float]
+    max_price: Mapped[DECIMAL] = mapped_column(DECIMAL(precision=20, scale=10))
+    open_interest: Mapped[DECIMAL] = mapped_column(DECIMAL(precision=20, scale=10))
 
     currency: Mapped[Currency] = relationship(back_populates="cryptopulses")
     date: Mapped[DateRecord] = relationship(back_populates="cryptopulses")
