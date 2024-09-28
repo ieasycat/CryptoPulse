@@ -37,7 +37,8 @@ class Settings(BaseSettings):
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig
-    coinmarketcap_key: dict
+    coinmarketcap_api_key: dict
+    bringx_api_key: dict
 
 
 settings = Settings()
