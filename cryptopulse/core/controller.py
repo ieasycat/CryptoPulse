@@ -14,7 +14,7 @@ class BaseController:
     async def find(session: AsyncSession, model, **kwargs) -> int | None:
         stmt = select(model).filter_by(**kwargs)
         result: model | None = await session.scalar(stmt)
-        return result.id
+        return result.id if result else None
 
     @staticmethod
     async def create(session: AsyncSession, model, **kwargs) -> int:
@@ -23,12 +23,11 @@ class BaseController:
         await session.commit()
         return instance.id
 
-    @classmethod
-    async def find_or_create(cls, session: AsyncSession, model, **kwargs) -> int:
-        result = await cls.find(session=session, model=model, **kwargs)
+    async def find_or_create(self, session: AsyncSession, model, **kwargs) -> int:
+        result = await self.find(session=session, model=model, **kwargs)
 
         if not result:
-            result = await cls.create(session=session, model=model, **kwargs)
+            result = await self.create(session=session, model=model, **kwargs)
 
         return result
 
@@ -81,8 +80,8 @@ class CryptoPulseController:
 class CurrencyController(BaseController):
 
     @staticmethod
-    async def upsert_or_create(session: AsyncSession, currencyes: list):
-        stmt = insert(Currency).values(currencyes)
+    async def upsert_or_create(session: AsyncSession, currencies: list):
+        stmt = insert(Currency).values(currencies)
         stmt = stmt.on_conflict_do_update(
             index_elements=["name"],
             set_={
@@ -93,27 +92,26 @@ class CurrencyController(BaseController):
         await session.commit()
 
     @staticmethod
-    async def find(session: AsyncSession, model, **kwargs) -> int | None:
-        return await super().find(session=session, model=Currency, **kwargs)
+    async def list_currencies(session: AsyncSession) -> List[Currency]:
+        stmt = select(Currency).filter_by(activated=True)
+        result = await session.execute(stmt)
+        currencyes = result.scalars().all()
+        return currencyes
 
-    @classmethod
-    async def find_or_create(cls, session: AsyncSession, **kwargs) -> int:
-        return await super().find_or_create(session=session, model=Currency, **kwargs)
+    async def find(self, session: AsyncSession, **kwargs) -> int | None:
+        return await super().find(session=session, model=Currency, **kwargs)
 
 
 class DateController(BaseController):
-    @classmethod
-    async def find_or_create(cls, session: AsyncSession, **kwargs) -> int:
+    async def find_or_create(self, session: AsyncSession, **kwargs) -> int:
         return await super().find_or_create(session=session, model=DateRecord, **kwargs)
 
 
 class TimeController(BaseController):
-    @classmethod
-    async def find_or_create(cls, session: AsyncSession, **kwargs) -> int:
+    async def find_or_create(self, session: AsyncSession, **kwargs) -> int:
         return await super().find_or_create(session=session, model=TimeRecord, **kwargs)
 
 
 class ExchangeController(BaseController):
-    @classmethod
-    async def find_or_create(cls, session: AsyncSession, **kwargs) -> int:
+    async def find_or_create(self, session: AsyncSession, **kwargs) -> int:
         return await super().find_or_create(session=session, model=Exchange, **kwargs)
