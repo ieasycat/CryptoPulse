@@ -49,8 +49,8 @@ class CryptoPulse(Base):
     time_id: Mapped[int] = mapped_column(ForeignKey(TimeRecord.id))
     exchange_id: Mapped[int] = mapped_column(ForeignKey(Exchange.id))
 
-    max_price: Mapped[DECIMAL] = mapped_column(DECIMAL(precision=20, scale=10))
-    open_interest: Mapped[DECIMAL] = mapped_column(DECIMAL(precision=20, scale=10))
+    max_price: Mapped[DECIMAL] = mapped_column(DECIMAL(precision=40, scale=5))
+    open_interest: Mapped[DECIMAL] = mapped_column(DECIMAL(precision=40, scale=5))
 
     currency: Mapped[Currency] = relationship(back_populates="cryptopulses")
     date: Mapped[DateRecord] = relationship(back_populates="cryptopulses")
