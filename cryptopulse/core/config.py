@@ -18,7 +18,7 @@ class ApiPrefix(BaseModel):
 
 class DatabaseConfig(BaseModel):
     url: PostgresDsn
-    echo: bool = True
+    echo: bool
     pool_size: int = 50
     max_overflow: int = 10
 
@@ -37,8 +37,8 @@ class Settings(BaseSettings):
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig
-    coinmarketcap_api_key: dict
-    bringx_api_key: dict
+    binance_api_url: str = "https://fapi.binance.com/fapi/v1/exchangeInfo"
+    bringx_api_url: str = "https://open-api.bingx.com/openApi/swap/v2/quote/contracts"
 
 
 settings = Settings()
