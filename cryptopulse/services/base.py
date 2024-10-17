@@ -6,7 +6,7 @@ import datetime as dt
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.controller import (
+from core.controllers import (
     CurrencyController,
     DateController,
     TimeController,

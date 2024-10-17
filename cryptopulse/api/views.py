@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import db_helper, CryptoPulse
 from core.schemas import CryptoPulseSchema
-from core.controller import CryptoPulseController
+from core.controllers import CryptoPulseController
 
 router = APIRouter()
 
