@@ -1,4 +1,4 @@
-from typing import List
+from typing import Sequence
 
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
@@ -35,7 +35,7 @@ class BaseController:
 class CryptoPulseController:
 
     @staticmethod
-    async def list_cryptopulses(session: AsyncSession) -> List[CryptoPulse]:
+    async def list_cryptopulses(session: AsyncSession) -> Sequence[CryptoPulse]:
         stmt = (
             select(CryptoPulse)
             .options(
@@ -92,11 +92,11 @@ class CurrencyController(BaseController):
         await session.commit()
 
     @staticmethod
-    async def list_currencies(session: AsyncSession) -> List[Currency]:
+    async def list_currencies(session: AsyncSession) -> Sequence[Currency]:
         stmt = select(Currency).filter_by(activated=True)
         result = await session.execute(stmt)
-        currencyes = result.scalars().all()
-        return currencyes
+        currencies = result.scalars().all()
+        return currencies
 
     async def find(self, session: AsyncSession, **kwargs) -> int | None:
         return await super().find(session=session, model=Currency, **kwargs)

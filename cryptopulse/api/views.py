@@ -1,9 +1,9 @@
-from typing import List, Annotated
+from typing import Annotated, Sequence
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.models import db_helper
-from core.schemas.schemas import CryptoPulseSchema
+from core.models import db_helper, CryptoPulse
+from core.schemas import CryptoPulseSchema
 from core.controller import CryptoPulseController
 
 router = APIRouter()
@@ -15,7 +15,7 @@ async def list_cryptopulses(
         AsyncSession,
         Depends(db_helper.session_getter),
     ],
-) -> List[CryptoPulseSchema]:
+) -> Sequence[CryptoPulse]:
     return await CryptoPulseController.list_cryptopulses(session=session)
 
 
@@ -26,7 +26,7 @@ async def get_cryptopulse_by_id(
         AsyncSession,
         Depends(db_helper.session_getter),
     ],
-) -> CryptoPulseSchema:
+) -> CryptoPulse:
     return await CryptoPulseController.get_cryptopulse(
         session=session, cryptopulse_id=cryptopulse_id
     )
